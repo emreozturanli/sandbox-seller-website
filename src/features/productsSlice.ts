@@ -9,7 +9,6 @@ interface ProductState {
 }
 
 const initialState: ProductState = {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     products: [],
     loading: false,
 }
@@ -23,7 +22,7 @@ export const getProducts = createAsyncThunk(
     }
 )
 
-export const productSlice = createSlice({
+export const productsSlice = createSlice({
     name: 'products',
     initialState,
     reducers:{
@@ -40,10 +39,9 @@ export const productSlice = createSlice({
           })
           builder.addCase(getProducts.rejected, (state: ProductState) => {
             state.loading = false;
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             state.products = [];
           })
     },
 })
 
-export default productSlice.reducer
+export default productsSlice.reducer

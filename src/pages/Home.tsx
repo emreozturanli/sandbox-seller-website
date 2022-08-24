@@ -4,7 +4,7 @@ import Products from '../components/Products/Products'
 
 const Home = () => {
   return (
-    <main className='container m-auto max-w-7xl px-6 xl:px-0'>
+    <main className='container m-auto pb-16 max-w-7xl px-6 xl:px-0'>
       <Hero/>
       <Info/>
       <Products/>
