@@ -22,7 +22,7 @@ const Details = () => {
           <p>{product?.description}</p>
         </div>
 
-        <div className="flex flex-col gap-4 ">
+        <div className="flex flex-col gap-4 lg:w-2/5">
 
           <div className="flex flex-col gap-2 rounded-md p-2 bg-slate-100">
             <h4 className="text-xl font-semibold">Tags</h4>
