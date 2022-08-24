@@ -2,7 +2,9 @@ import React from 'react'
 
 const Services = () => {
   return (
-    <div>Services</div>
+    <section className='container m-auto max-w-7xl px-6 xl:px-0'>
+      
+    </section>
   )
 }
 
