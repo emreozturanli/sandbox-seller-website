@@ -2,9 +2,10 @@ import { useParams } from "react-router-dom"
 import { useAppSelector } from "../app/hooks"
 
 const Details = () => {
-  const { products } = useAppSelector(state => state.products)
+  const { products,newProducts } = useAppSelector(state => state.products)
   const { productId } = useParams()
-  const product = products.find(product => productId && product.id === +productId)
+  const allProducts = [...products, ...newProducts]
+  const product = allProducts.find(product => productId && product.id === +productId)
 
   const url = 'https://picsum.photos/900/400'
 

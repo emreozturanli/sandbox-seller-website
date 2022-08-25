@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IProducts,Product } from "../types/interfaces";
+import { IProducts,Product,INewProduct } from "../types/interfaces";
+import type { RootState } from '../app/store'
 
 
 interface ProductState {
     products: IProducts['products']
     loading: boolean
-    newProducts: Product[]
+    newProducts: INewProduct[]
 }
 
 const initialState: ProductState = {
@@ -25,7 +26,7 @@ export const getProducts = createAsyncThunk(
 )
 export const addProduct = createAsyncThunk(
     'products/addProduct',
-    async ({ newProduct }) => {
+    async ({ newProduct } : any) => {
         const url = `https://dummyjson.com/products/`
         const response = await fetch(url, {
             method: "POST",
@@ -54,7 +55,7 @@ export const productsSlice = createSlice({
     name: 'products',
     initialState,
     reducers: {
-
+        addNewProduct : (state,action : PayloadAction<INewProduct>)=> {state.newProducts = [...state.newProducts, action.payload]}
     },
     extraReducers(builder: any) {
         //GET
@@ -76,12 +77,17 @@ export const productsSlice = createSlice({
         })
         builder.addCase(addProduct.fulfilled, (state: ProductState, action: PayloadAction<Product>) => {
             state.loading = false;
-            state.newProducts= [...state.newProducts, action.payload]
+
+            //Normally if we had our own API we would update our products list here
+
+            // state.newProducts= [...state.newProducts, action.payload]
         })
         builder.addCase(addProduct.rejected, (state: ProductState) => {
             state.loading = false;
         })
     },
 })
+
+export const { addNewProduct } = productsSlice.actions
 
 export default productsSlice.reducer
