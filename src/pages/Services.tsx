@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../app/hooks'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { addNewProduct, addProduct } from '../features/productsSlice'
 import { INewProduct } from '../types/interfaces'
+import spinner from '../assets/spinner.gif'
 
 const Services = () => {
   const [newProduct, setNewProduct] = useState<INewProduct>({
@@ -18,6 +19,7 @@ const Services = () => {
     images: []
   })
 
+  const {loading} = useAppSelector(state=> state.products)
   const dispatch = useAppDispatch()
 
   const handleChange = (e: any) => {
@@ -55,6 +57,10 @@ const Services = () => {
   }
 
   const inputStyle = 'bg-slate-200 border-none px-2 py-4 outline-none rounded-md w-80'
+
+  if (loading) {
+    return <img className="block m-auto" src={spinner} alt="loading-spinner" />
+  }
 
   return (
     <section className='container m-auto max-w-7xl px-6 xl:px-0 pb-20 '>

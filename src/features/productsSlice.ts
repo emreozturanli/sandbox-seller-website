@@ -1,19 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IProducts,Product,INewProduct } from "../types/interfaces";
-import type { RootState } from '../app/store'
+import toast from 'react-hot-toast';
 
 
 interface ProductState {
     products: IProducts['products']
     loading: boolean
     newProducts: INewProduct[]
+    product: Product
 }
 
 const initialState: ProductState = {
     products: [],
     loading: false,
-    newProducts: []
+    newProducts: [],
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    product: <Product>{}
 }
 
 export const getProducts = createAsyncThunk(
@@ -24,6 +27,16 @@ export const getProducts = createAsyncThunk(
             })
     }
 )
+
+export const getProduct = createAsyncThunk(
+    'products/getProduct', async ({productId}: any) => {
+        return fetch(`https://dummyjson.com/products/${productId}`)
+            .then(res => {
+                return res.json()
+            })
+    }
+)
+
 export const addProduct = createAsyncThunk(
     'products/addProduct',
     async ({ newProduct } : any) => {
@@ -71,13 +84,25 @@ export const productsSlice = createSlice({
             state.loading = false;
             state.products = [];
         })
+        //GET SINGLE PRODUCT
+        builder.addCase(getProduct.pending, (state: ProductState) => {
+            state.loading = true;
+        })
+        builder.addCase(getProduct.fulfilled, (state: ProductState, action: PayloadAction<Product>) => {
+            state.loading = false;
+            state.product = action.payload
+
+        })
+        builder.addCase(getProduct.rejected, (state: ProductState) => {
+            state.loading = false;
+        })
         //POST
         builder.addCase(addProduct.pending, (state: ProductState) => {
             state.loading = true;
         })
         builder.addCase(addProduct.fulfilled, (state: ProductState, action: PayloadAction<Product>) => {
             state.loading = false;
-
+            toast.success('New Product Successfully Added!')
             //Normally if we had our own API we would update our products list here
 
             // state.newProducts= [...state.newProducts, action.payload]
