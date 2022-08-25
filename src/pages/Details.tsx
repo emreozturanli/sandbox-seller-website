@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { getProduct, getProducts } from "../features/productsSlice"
 import spinner from '../assets/spinner.gif'
+import NotFound from "./NotFound"
 
 const Details = () => {
-  // const [product, setProduct] = useState<Product>()
   const { products, newProducts, loading } = useAppSelector(state => state.products)
   const { productId } = useParams()
   const dispatch = useAppDispatch()
@@ -21,6 +21,10 @@ const Details = () => {
 
   if (loading) {
     return <img className="block m-auto" src={spinner} alt="loading-spinner" />
+  }
+
+  if(!newProduct){
+    return <NotFound/>
   }
 
   return (
